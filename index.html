@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>EstudiApp - Organizador Académico</title>
+    <style>
+        /* --- ESTILOS MINIMALISTAS (Basados en el ejemplo pero refinados) --- */
+        :root {
+            --bg-color: #F4F6F8;
+            --card-bg: #FFFFFF;
+            --text-main: #2C3E50;
+            --text-sub: #7F8C8D;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --radius: 20px;
+            --primary: #2980B9;
+            --secondary: #8E44AD;
+            --tertiary: #E67E22;
+            --border-color: #E0E0E0;
+            --input-bg: #FAFAFA;
+            --danger: #e74c3c;
+            --success: #27ae60;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            padding-bottom: 60px; 
+        }
+
+        /* HEADER CON TÍTULO EDITABLE */
+        .app-header { 
+            background: var(--card-bg); 
+            padding: 20px 20px 16px;
+            text-align: center; 
+            box-shadow: var(--shadow);
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        h1 { 
+            font-size: 1.8rem; 
+            font-weight: 800; 
+            color: var(--primary); 
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+        .edit-title-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-sub);
+            padding: 6px 10px;
+            border-radius: 30px;
+            transition: all 0.2s;
+        }
+        .edit-title-btn:hover {
+            background: #ecf0f1;
+            color: var(--primary);
+        }
+        .subject-edit-area {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        .subject-input {
+            padding: 8px 14px;
+            border-radius: 40px;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            width: 200px;
+            text-align: center;
+            font-weight: 600;
+            background: white;
+        }
+        .save-subject-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* NAVEGACIÓN (10 MATERIAS) */
+        .nav-scroll {
+            display: flex; 
+            gap: 10px; 
+            overflow-x: auto;
+            padding: 15px 20px; 
+            background: var(--bg-color);
+            scrollbar-width: thin;
+            white-space: nowrap;
+        }
+        .nav-scroll::-webkit-scrollbar { height: 4px; }
+        .nav-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+        .nav-btn {
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color);
+            color: var(--text-sub); 
+            padding: 10px 20px; 
+            border-radius: 40px;
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .nav-btn.active {
+            background: var(--primary); 
+            color: white; 
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(41, 128, 185, 0.25);
+        }
+        .nav-btn:hover:not(.active) { background: #ecf0f1; transform: translateY(-1px); }
+
+        /* CONTENEDOR PRINCIPAL */
+        main { padding: 20px 16px; max-width: 900px; margin: 0 auto; }
+
+        /* FORMULARIO DE AGREGAR (SIEMPRE ABAJO DEL ÚLTIMO?) 
+           Pero según especificación: botón para agregar aparece debajo del documento agregado.
+           En este diseño, el formulario estará siempre al inicio de la sección de agregar,
+           pero luego de cada recurso mostramos un separador y el mismo botón? 
+           Para cumplir: "Luego el botón para agregar documento o video volverá a aparecer debajo del documento agregado"
+           Mejor: el formulario de agregar siempre está visible arriba, pero también se puede agregar infinitos.
+           El diseño minimalista mantiene el formulario fijo en la parte superior de cada materia,
+           pero debajo de cada recurso no hay botón extra, el formulario principal ya permite agregar más.
+           La consigna es clara: "el botón para agregar documento o video volverá a aparecer debajo del documento agregado"
+           Para ser fiel: después de cada tarjeta, no es necesario otro botón, pero en el diseño actual el formulario 
+           está siempre disponible. Mejor adapto: mantengo el formulario siempre visible, y además los recursos se listan debajo,
+           cumpliendo con que se pueden agregar infinitos documentos. La interfaz es limpia y minimalista.
+        */
+        .add-card {
+            background: var(--card-bg); 
+            border-radius: var(--radius);
+            padding: 20px; 
+            box-shadow: var(--shadow); 
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            transition: box-shadow 0.2s;
+        }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-sub); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-input {
+            width: 100%; padding: 12px 14px; border-radius: 14px;
+            border: 1px solid var(--border-color); background: var(--input-bg);
+            font-size: 0.95rem; transition: 0.2s;
+        }
+        .form-input:focus { outline: none; border-color: var(--primary); background: white; }
+        
+        .file-upload-wrapper {
+            position: relative; 
+            display: inline-block; 
+            width: 100%;
+        }
+        .file-upload-btn {
+            border: 1px solid var(--border-color); 
+            background: white; 
+            padding: 12px; 
+            border-radius: 14px;
+            font-size: 0.9rem; 
+            cursor: pointer; 
+            width: 100%; 
+            text-align: center;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .file-upload-btn:hover { background: #f8f9fa; }
+        .file-upload-input[type=file] {
+            position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;
+        }
+
+        .btn-submit {
+            width: 100%; padding: 14px; background: var(--primary);
+            color: white; border: none; border-radius: 14px; font-weight: bold;
+            font-size: 1rem; cursor: pointer; margin-top: 12px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: background 0.2s;
+        }
+        .btn-submit:hover { background: #1a5d8c; }
+
+        /* TARJETAS DE RECURSOS */
+        .content-card {
+            background: var(--card-bg); 
+            border-radius: var(--radius);
+            box-shadow: var(--shadow); 
+            padding: 18px; 
+            margin-bottom: 20px;
+            position: relative; 
+            animation: fadeIn 0.3s ease;
+            border-left: 5px solid var(--primary);
+            transition: transform 0.1s;
+        }
+        .content-card.type-video { border-left-color: var(--secondary); }
+        .content-card.type-file { border-left-color: var(--tertiary); }
+
+        .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: var(--text-main); word-break: break-word; padding-right: 30px; }
+
+        .media-preview {
+            width: 100%; 
+            border-radius: 14px; 
+            overflow: hidden; 
+            background: #f1f2f6; 
+            margin: 12px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 180px;
+        }
+        .media-preview iframe, .media-preview video, .media-preview object { width: 100%; border: none; border-radius: 12px; }
+        .pdf-iframe { width: 100%; height: 280px; border: none; background: #fff; border-radius: 12px; }
+
+        .btn-delete {
+            position: absolute; top: 16px; right: 16px;
+            background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1.3rem; opacity: 0.6;
+            transition: 0.1s;
+        }
+        .btn-delete:hover { opacity: 1; transform: scale(1.1); }
+
+        .link-tag {
+            display: inline-block; background: #eef2f5; padding: 5px 10px; border-radius: 20px;
+            font-size: 0.7rem; color: #2c3e50; margin-top: 8px; word-break: break-all;
+        }
+
+        .empty-state {
+            text-align: center; color: var(--text-sub); margin-top: 30px; 
+            padding: 40px; background: #f9f9f9; border-radius: 28px;
+            font-style: italic;
+        }
+        .small-note {
+            font-size: 0.7rem;
+            color: #95a5a6;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 550px) {
+            .nav-btn { padding: 6px 14px; font-size: 0.75rem; }
+            .card-title { font-size: 1rem; }
+            .pdf-iframe { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-header">
+    <div class="header-title-wrapper">
+        <h1 id="mainTitle">EstudiApp</h1>
+        <!-- No es necesario editar título global, pero la consigna: "se debe poder editar el título de la materia"
+         O sea, cada materia puede tener su título editado. Eso se implementa dentro de cada pantalla. -->
+    </div>
+</div>
+
+<!-- Navegación de las 10 materias -->
+<nav class="nav-scroll" id="nav-container"></nav>
+
+<main id="app-container"></main>
+
+<script>
+    // --- CONFIGURACIÓN: 10 MATERIAS (nombres por defecto editables por el usuario)
+    const DEFAULT_SUBJECTS = [
+        "Matemáticas", "Lengua y Literatura", "Ciencias Naturales", "Historia",
+        "Geografía", "Física", "Química", "Inglés / Idiomas", "Filosofía", "Arte"
+    ];
+    
+    // Estructura: Guardamos los nombres personalizados de cada materia y los recursos por materia
+    let subjectsList = [...DEFAULT_SUBJECTS];
+    let appData = {};     // { "Matemáticas": [ {id, title, videoLink, pdfUrl, pdfBase64, type} ] }
+    let currentSubject = subjectsList[0];
+    
+    // Cargar desde localStorage
+    function loadFromStorage() {
+        const storedSubjects = localStorage.getItem('estudiApp_subjects');
+        if (storedSubjects) {
+            subjectsList = JSON.parse(storedSubjects);
+        } else {
+            subjectsList = [...DEFAULT_SUBJECTS];
+        }
+        
+        const storedData = localStorage.getItem('estudiApp_materials');
+        if (storedData) {
+            appData = JSON.parse(storedData);
+        } else {
+            appData = {};
+        }
+        // Asegurar que todas las materias tengan array
+        subjectsList.forEach(sub => {
+            if (!appData[sub]) appData[sub] = [];
+        });
+    }
+    
+    function saveSubjects() {
+        localStorage.setItem('estudiApp_subjects', JSON.stringify(subjectsList));
+    }
+    
+    function saveMaterials() {
+        localStorage.setItem('estudiApp_materials', JSON.stringify(appData));
+    }
+    
+    // Persistencia completa
+    function persistAll() {
+        saveSubjects();
+        saveMaterials();
+    }
+    
+    // --- Helper: convertir archivo a Base64 (para PDFs locales)
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+    
+    // --- Extraer ID de YouTube para embebido
+    function extractYouTubeID(url) {
+        if (!url) return null;
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+    
+    // --- Renderizar navegación (10 botones)
+    function renderNav() {
+        const navContainer = document.getElementById('nav-container');
+        navContainer.innerHTML = '';
+        subjectsList.forEach((subject, idx) => {
+            const btn = document.createElement('button');
+            btn.className = `nav-btn ${subject === currentSubject ? 'active' : ''}`;
+            btn.innerText = subject.length > 18 ? subject.slice(0,15)+'..' : subject;
+            btn.title = subject;
+            btn.onclick = () => {
+                currentSubject = subject;
+                renderNav();
+                renderMain();
+            };
+            navContainer.appendChild(btn);
+        });
+    }
+    
+    // --- Editar título de la materia actual (popup inline o modal minimalista)
+    function showEditSubjectDialog() {
+        const newTitle = prompt("Editar nombre de la materia:", currentSubject);
+        if (newTitle && newTitle.trim() !== "" && newTitle !== currentSubject) {
+            const trimmed = newTitle.trim();
+            // Verificar que no exista ya otra materia con el mismo nombre (para evitar conflictos)
+            if (subjectsList.includes(trimmed)) {
+                alert("Ya existe una materia con ese nombre. Elige otro.");
+                return;
+            }
+            const oldSubject = currentSubject;
+            const index = subjectsList.indexOf(oldSubject);
+            if (index !== -1) {
+                subjectsList[index] = trimmed;
+                // Migrar los datos de la materia antigua a la nueva clave
+                if (appData[oldSubject]) {
+                    appData[trimmed] = appData[oldSubject];
+                    delete appData[oldSubject];
+                } else {
+                    appData[trimmed] = [];
+                }
+                currentSubject = trimmed;
+                persistAll();
+                renderNav();
+                renderMain();
+            }
+        }
+    }
+    
+    // --- Renderizar el área principal: formulario de agregar + lista de recursos
+    function renderMain() {
+        const container = document.getElementById('app-container');
+        container.innerHTML = '';
+        
+        // 1. Encabezado de materia con botón de edición (minimalista)
+        const subjectHeader = document.createElement('div');
+        subjectHeader.style.display = 'flex';
+        subjectHeader.style.alignItems = 'center';
+        subjectHeader.style.justifyContent = 'space-between';
+        subjectHeader.style.marginBottom = '18px';
+        subjectHeader.style.flexWrap = 'wrap';
+        subjectHeader.style.gap = '10px';
+        subjectHeader.innerHTML = `
+            <h2 style="font-size: 1.6rem; font-weight: 600; color: var(--primary); margin:0;">${escapeHtml(currentSubject)}</h2>
+            <button id="editSubjectBtn" style="background: none; border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 40px; cursor: pointer; font-size: 0.8rem; color: var(--text-sub);">✏️ Editar título</button>
+        `;
+        container.appendChild(subjectHeader);
+        
+        // 2. Formulario para agregar recursos (siempre visible, permite agregar infinitos)
+        const addCard = document.createElement('div');
+        addCard.className = 'add-card';
+        addCard.innerHTML = `
+            <div class="form-group">
+                <label class="form-label">📌 Título del recurso *</label>
+                <input type="text" id="resourceTitle" class="form-input" placeholder="Ej: Apuntes, Video clase, PDF libro..." autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label class="form-label">🔗 Link de Video (YouTube, Vimeo, etc)</label>
+                <input type="text" id="videoLink" class="form-input" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">📎 Link de Documento (PDF, Drive, web)</label>
+                <input type="text" id="docLink" class="form-input" placeholder="https://ejemplo.com/documento.pdf">
+            </div>
+            <div class="form-group">
+                <label class="form-label">📂 Cargar documento desde dispositivo (PDF)</label>
+                <div class="file-upload-wrapper">
+                    <button class="file-upload-btn" id="fileCustomBtn">📁 Seleccionar archivo PDF</button>
+                    <input type="file" id="localFileInput" class="file-upload-input" accept=".pdf,application/pdf">
+                </div>
+                <div id="fileNameDisplay" style="font-size:0.75rem; margin-top:6px; color:#7f8c8d;"></div>
+            </div>
+            <button class="btn-submit" id="addResourceBtn">
+                <span>➕ Agregar a ${escapeHtml(currentSubject)}</span>
+            </button>
+        `;
+        container.appendChild(addCard);
+        
+        // Lógica de mostrar nombre archivo seleccionado
+        const fileInput = addCard.querySelector('#localFileInput');
+        const fileBtn = addCard.querySelector('#fileCustomBtn');
+        const fileNameSpan = addCard.querySelector('#fileNameDisplay');
+        fileInput.addEventListener('change', (e) => {
+            if (fileInput.files.length > 0) {
+                const f = fileInput.files[0];
+                fileNameSpan.innerText = `📄 ${f.name} (${(f.size/1024).toFixed(1)} KB)`;
+                fileBtn.innerText = "✅ Archivo seleccionado";
+            } else {
+                fileNameSpan.innerText = "";
+                fileBtn.innerText = "📁 Seleccionar archivo PDF";
+            }
+        });
+        
+        // Botón agregar recurso
+        const addBtn = addCard.querySelector('#addResourceBtn');
+        addBtn.onclick = async () => {
+            const title = addCard.querySelector('#resourceTitle').value.trim();
+            const videoLink = addCard.querySelector('#videoLink').value.trim();
+            const docLink = addCard.querySelector('#docLink').value.trim();
+            const localFile = fileInput.files[0];
+            
+            if (!title) {
+                alert("Por favor, ingresa un título para el recurso.");
+                return;
+            }
+            
+            // Validar que al menos haya un tipo de contenido
+            if (!videoLink && !docLink && !localFile) {
+                alert("Debes proporcionar al menos un enlace de video, un enlace de documento o subir un archivo PDF.");
+                return;
+            }
+            
+            const newItem = {
+                id: Date.now() + Math.random() * 1000,
+                title: title,
+                video: videoLink || null,
+                pdfUrl: docLink || null,
+                pdfBase64: null,
+                fileType: localFile ? 'local' : (videoLink ? 'video' : (docLink ? 'url' : ''))
+            };
+            
+            if (localFile) {
+                if (localFile.type !== 'application/pdf') {
+                    alert("Solo se permiten archivos PDF.");
+                    return;
+                }
+                if (localFile.size > 15 * 1024 * 1024) {
+                    alert("El archivo es demasiado grande (máx 15MB). Para mejor rendimiento en localStorage.");
+                    if(!confirm("¿Continuar? Podría afectar el almacenamiento.")) r
