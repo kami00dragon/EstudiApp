@@ -546,4 +546,255 @@
             } else if (item.fileType === 'video') {
                 return `<div class="media-preview"><video controls style="width:100%; max-height:250px;"><source src="${item.fileData}" type="video/mp4"></video></div><div class="link-tag">🎬 Video local • ${escapeHtml(item.fileName || 'video')}</div>`;
             } else if (item.fileType === 'pdf') {
-                return `<div class
+                return `<div class="media-preview"><iframe class="pdf-iframe" src="${item.fileData}#toolbar=0" title="PDF local"></iframe></div><div class="link-tag">📄 Documento PDF • ${escapeHtml(item.fileName || 'documento')}</div>`;
+            }
+        }
+        else if (item.pdfUrl && item.pdfUrl.trim() !== "") {
+            return `<div class="media-preview" style="background:#f8f9fa; padding:16px; text-align:center;"><a href="${escapeHtml(item.pdfUrl)}" target="_blank" rel="noopener" style="background:var(--tertiary); color:white; padding:8px 20px; border-radius:40px; text-decoration:none; display:inline-block;">📑 Abrir documento externo</a></div><div class="link-tag">🔗 Enlace web</div>`;
+        }
+        return `<div class="link-tag">⚠️ Sin contenido multimedia visible</div>`;
+    }
+    
+    // --- Renderizar modo edición ---
+    function renderEditMode(item, cardElement) {
+        const editDiv = document.createElement('div');
+        editDiv.className = 'edit-form';
+        editDiv.innerHTML = `
+            <div class="edit-field">
+                <label style="font-size:0.7rem; color:var(--text-sub);">Título *</label>
+                <input type="text" id="editTitle" value="${escapeHtml(item.title)}">
+            </div>
+            <div class="edit-field">
+                <label style="font-size:0.7rem; color:var(--text-sub);">Enlace de video (YouTube)</label>
+                <input type="text" id="editVideo" value="${escapeHtml(item.video || '')}" placeholder="https://youtube.com/...">
+            </div>
+            <div class="edit-field">
+                <label style="font-size:0.7rem; color:var(--text-sub);">Enlace de documento</label>
+                <input type="text" id="editDocLink" value="${escapeHtml(item.pdfUrl || '')}" placeholder="https://...">
+            </div>
+            <div class="edit-file-row">
+                <div class="file-upload-wrapper" style="margin-bottom:8px;">
+                    <button class="file-upload-btn" id="editFileTrigger">📂 Reemplazar archivo (imagen/video/pdf)</button>
+                    <input type="file" id="editFileInput" class="file-upload-input" accept="image/*,video/*,application/pdf">
+                </div>
+                <div id="editFileName" style="font-size:0.7rem; color:var(--text-sub);">${item.fileName ? `Archivo actual: ${item.fileName}` : 'Sin archivo local'}</div>
+            </div>
+            <div>
+                <button class="save-edit-btn" id="saveEditBtn">💾 Guardar cambios</button>
+                <button class="cancel-edit-btn" id="cancelEditBtn">Cancelar</button>
+            </div>
+        `;
+        cardElement.appendChild(editDiv);
+        
+        let newFileSelected = null;
+        const fileInputEdit = editDiv.querySelector('#editFileInput');
+        const fileTriggerEdit = editDiv.querySelector('#editFileTrigger');
+        const fileNameSpan = editDiv.querySelector('#editFileName');
+        
+        fileInputEdit.addEventListener('change', () => {
+            if (fileInputEdit.files.length > 0) {
+                newFileSelected = fileInputEdit.files[0];
+                fileNameSpan.textContent = `Nuevo archivo: ${newFileSelected.name}`;
+                fileTriggerEdit.textContent = '✅ Archivo seleccionado';
+            }
+        });
+        
+        editDiv.querySelector('#saveEditBtn').onclick = async () => {
+            const newTitle = editDiv.querySelector('#editTitle').value.trim();
+            const newVideo = editDiv.querySelector('#editVideo').value.trim();
+            const newDocLink = editDiv.querySelector('#editDocLink').value.trim();
+            if (!newTitle) { alert("El título no puede estar vacío"); return; }
+            
+            const success = await updateResource(item.id, newTitle, newVideo, newDocLink, newFileSelected);
+            if (success) {
+                editingResourceId = null;
+                renderMain();
+            }
+        };
+        
+        editDiv.querySelector('#cancelEditBtn').onclick = () => {
+            editingResourceId = null;
+            renderMain();
+        };
+    }
+    
+    // --- Renderizar principal ---
+    function renderMain() {
+        const container = document.getElementById('app-container');
+        container.innerHTML = '';
+        
+        // Encabezado materia con botón editar
+        const subjectHeader = document.createElement('div');
+        subjectHeader.style.display = 'flex';
+        subjectHeader.style.alignItems = 'center';
+        subjectHeader.style.justifyContent = 'space-between';
+        subjectHeader.style.marginBottom = '18px';
+        subjectHeader.style.flexWrap = 'wrap';
+        subjectHeader.style.gap = '10px';
+        subjectHeader.innerHTML = `
+            <h2 style="font-size: 1.6rem; font-weight: 600; color: var(--primary); margin:0;">${escapeHtml(currentSubject)}</h2>
+            <button id="editSubjectBtn" style="background: none; border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 40px; cursor: pointer; font-size: 0.8rem; color: var(--text-sub);">✏️ Editar título</button>
+        `;
+        container.appendChild(subjectHeader);
+        
+        // Barra de búsqueda
+        const searchDiv = document.createElement('div');
+        searchDiv.className = 'search-bar';
+        searchDiv.innerHTML = `<input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar por título..." value="${escapeHtml(searchTerm)}">`;
+        container.appendChild(searchDiv);
+        
+        // Formulario para agregar recursos
+        const addCard = document.createElement('div');
+        addCard.className = 'add-card';
+        addCard.innerHTML = `
+            <div class="form-group">
+                <label class="form-label">📌 Título del recurso *</label>
+                <input type="text" id="resourceTitle" class="form-input" placeholder="Ej: Apuntes, Video clase, Imagen..." autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label class="form-label">🔗 Link de Video (YouTube, Vimeo, etc)</label>
+                <input type="text" id="videoLink" class="form-input" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">📎 Link de Documento (PDF, Drive, web)</label>
+                <input type="text" id="docLink" class="form-input" placeholder="https://ejemplo.com/documento.pdf">
+            </div>
+            <div class="form-group">
+                <label class="form-label">📂 Subir archivo (Imagen / Video / PDF)</label>
+                <div class="file-upload-wrapper">
+                    <button class="file-upload-btn" id="fileCustomBtn">📁 Seleccionar archivo</button>
+                    <input type="file" id="localFileInput" class="file-upload-input" accept="image/*,video/*,application/pdf">
+                </div>
+                <div id="fileNameDisplay" style="font-size:0.75rem; margin-top:6px; color:#7f8c8d;"></div>
+            </div>
+            <button class="btn-submit" id="addResourceBtn">
+                <span>➕ Agregar a ${escapeHtml(currentSubject)}</span>
+            </button>
+        `;
+        container.appendChild(addCard);
+        
+        // Lógica archivo
+        const fileInput = addCard.querySelector('#localFileInput');
+        const fileBtn = addCard.querySelector('#fileCustomBtn');
+        const fileNameSpan = addCard.querySelector('#fileNameDisplay');
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                const f = fileInput.files[0];
+                fileNameSpan.innerText = `📎 ${f.name} (${(f.size/1024).toFixed(1)} KB)`;
+                fileBtn.innerText = "✅ Archivo seleccionado";
+            } else {
+                fileNameSpan.innerText = "";
+                fileBtn.innerText = "📁 Seleccionar archivo";
+            }
+        });
+        
+        // Botón agregar
+        const addBtn = addCard.querySelector('#addResourceBtn');
+        addBtn.onclick = async () => {
+            const title = addCard.querySelector('#resourceTitle').value.trim();
+            const videoLink = addCard.querySelector('#videoLink').value.trim();
+            const docLink = addCard.querySelector('#docLink').value.trim();
+            const localFile = fileInput.files[0];
+            
+            const success = await addResource(title, videoLink, docLink, localFile);
+            if (success) {
+                addCard.querySelector('#resourceTitle').value = '';
+                addCard.querySelector('#videoLink').value = '';
+                addCard.querySelector('#docLink').value = '';
+                fileInput.value = '';
+                fileNameSpan.innerText = '';
+                fileBtn.innerText = "📁 Seleccionar archivo";
+                renderMain();
+            }
+        };
+        
+        // Filtrar recursos por búsqueda
+        let items = appData[currentSubject] || [];
+        if (searchTerm.trim()) {
+            const term = searchTerm.trim().toLowerCase();
+            items = items.filter(item => item.title.toLowerCase().includes(term));
+        }
+        
+        // Mostrar recursos (ordenados: primero el más antiguo debajo del header, último encima del footer)
+        // Para mantener el orden: los primeros subidos aparecen primero, los últimos al final
+        if (items.length === 0) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'empty-state';
+            emptyDiv.innerHTML = searchTerm ? `🔍 No se encontraron recursos con "${escapeHtml(searchTerm)}"` : '📭 No hay documentos ni videos guardados. Agrega usando el formulario superior.';
+            container.appendChild(emptyDiv);
+        } else {
+            // Orden cronológico: primero los más antiguos (para que el primer subido quede debajo del header)
+            const sorted = [...items]; // mantener orden de inserción (los más antiguos primero)
+            sorted.forEach(item => {
+                const card = document.createElement('div');
+                let typeClass = 'type-file';
+                if (item.video) typeClass = 'type-video';
+                else if (item.fileType === 'image') typeClass = 'type-image';
+                else if (item.fileType === 'video') typeClass = 'type-video';
+                
+                card.className = `content-card ${typeClass} ${editingResourceId === item.id ? 'editing-mode' : ''}`;
+                
+                const previewHtml = renderResourcePreview(item);
+                card.innerHTML = `
+                    <div class="action-buttons">
+                        <button class="icon-btn edit-btn" data-id="${item.id}">✏️</button>
+                        <button class="icon-btn delete-btn" data-id="${item.id}">🗑️</button>
+                    </div>
+                    <div class="card-title">${escapeHtml(item.title)}</div>
+                    ${previewHtml}
+                `;
+                container.appendChild(card);
+                
+                if (editingResourceId === item.id) {
+                    renderEditMode(item, card);
+                } else {
+                    const editBtn = card.querySelector('.edit-btn');
+                    const deleteBtn = card.querySelector('.delete-btn');
+                    if (editBtn) editBtn.onclick = () => { editingResourceId = item.id; renderMain(); };
+                    if (deleteBtn) deleteBtn.onclick = () => deleteResource(item.id);
+                }
+            });
+        }
+        
+        // Eventos
+        const editSubjectBtn = container.querySelector('#editSubjectBtn');
+        if (editSubjectBtn) editSubjectBtn.onclick = showEditSubjectDialog;
+        
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                searchTerm = e.target.value;
+                renderMain();
+            });
+        }
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // Inicialización
+    function init() {
+        loadFromStorage();
+        subjectsList.forEach(sub => {
+            if (!appData[sub]) appData[sub] = [];
+        });
+        for (let key in appData) {
+            if (!subjectsList.includes(key)) delete appData[key];
+        }
+        persistAll();
+        currentSubject = subjectsList[0];
+        renderNav();
+        renderMain();
+    }
+    
+    init();
+</script>
+</body>
+</html>
