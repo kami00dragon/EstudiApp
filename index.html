@@ -15,13 +15,13 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #F5F5F5;
             color: #2C3E50;
-            padding-bottom: 40px;
+            padding-bottom: 80px;
         }
 
-        /* Header fijo */
+        /* Header */
         .app-header {
             background-color: #FFFFFF;
-            padding: 20px 20px 16px;
+            padding: 20px 20px 12px;
             text-align: center;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             position: sticky;
@@ -36,7 +36,14 @@
             letter-spacing: -0.3px;
         }
 
-        /* Navegación horizontal de materias */
+        .subtitle {
+            font-size: 0.85rem;
+            color: #8E9AAB;
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        /* Navegación */
         .subjects-nav {
             background-color: #FFFFFF;
             padding: 12px 16px;
@@ -48,15 +55,6 @@
 
         .subjects-nav::-webkit-scrollbar {
             height: 3px;
-        }
-
-        .subjects-nav::-webkit-scrollbar-track {
-            background: #F0F0F0;
-        }
-
-        .subjects-nav::-webkit-scrollbar-thumb {
-            background: #C0C0C0;
-            border-radius: 3px;
         }
 
         .nav-btn {
@@ -71,7 +69,6 @@
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.2s ease;
-            font-family: inherit;
         }
 
         .nav-btn:hover {
@@ -86,19 +83,19 @@
 
         /* Contenedor principal */
         .main-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px 16px;
         }
 
-        /* Sección de materia con título editable */
+        /* Header de materia */
         .subject-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             padding-bottom: 12px;
             border-bottom: 2px solid #E8E8E8;
         }
@@ -107,7 +104,6 @@
             font-size: 1.6rem;
             font-weight: 600;
             color: #2C3E50;
-            word-break: break-word;
         }
 
         .edit-title-btn {
@@ -119,11 +115,31 @@
             cursor: pointer;
             color: #5a626e;
             transition: background 0.2s;
-            font-weight: 500;
         }
 
         .edit-title-btn:hover {
             background-color: #E0E0E0;
+        }
+
+        /* Barra de búsqueda */
+        .search-bar {
+            margin-bottom: 24px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #E2E6EA;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            background-color: white;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #2C3E50;
+            box-shadow: 0 0 0 2px rgba(44,62,80,0.1);
         }
 
         /* Tarjeta de agregar recurso */
@@ -137,31 +153,31 @@
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .form-label {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: #8E9AAB;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
-        .form-input {
+        .form-input, .form-textarea {
             width: 100%;
-            padding: 12px 14px;
+            padding: 10px 14px;
             border: 1px solid #E2E6EA;
-            border-radius: 14px;
-            font-size: 0.95rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
             font-family: inherit;
             background-color: #FAFAFA;
             transition: all 0.2s;
         }
 
-        .form-input:focus {
+        .form-input:focus, .form-textarea:focus {
             outline: none;
             border-color: #2C3E50;
             background-color: white;
@@ -174,15 +190,14 @@
 
         .file-btn {
             width: 100%;
-            padding: 12px 14px;
+            padding: 10px 14px;
             background-color: #FAFAFA;
             border: 1px solid #E2E6EA;
-            border-radius: 14px;
-            font-size: 0.9rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
             cursor: pointer;
             text-align: center;
             transition: background 0.2s;
-            font-family: inherit;
         }
 
         .file-btn:hover {
@@ -202,23 +217,22 @@
         .file-name {
             font-size: 0.7rem;
             color: #8E9AAB;
-            margin-top: 6px;
+            margin-top: 5px;
             padding-left: 6px;
         }
 
         .btn-add {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background-color: #2C3E50;
             color: white;
             border: none;
-            border-radius: 14px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             margin-top: 8px;
             transition: background 0.2s;
-            font-family: inherit;
         }
 
         .btn-add:hover {
@@ -234,15 +248,20 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             border: 1px solid #EFEFEF;
             position: relative;
-            transition: transform 0.1s;
+            transition: all 0.2s;
+        }
+
+        .resource-card.editing {
+            border: 2px solid #2C3E50;
+            background-color: #FEFEFE;
         }
 
         .resource-title {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #2C3E50;
             margin-bottom: 12px;
-            padding-right: 32px;
+            padding-right: 80px;
             word-break: break-word;
         }
 
@@ -272,27 +291,35 @@
             border-radius: 12px;
         }
 
+        .media-img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 12px;
+            object-fit: contain;
+        }
+
+        .media-video-local {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 12px;
+        }
+
         .external-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             background-color: #F5F5F5;
-            padding: 12px 18px;
+            padding: 10px 16px;
             border-radius: 40px;
             text-decoration: none;
             color: #2C3E50;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .external-link:hover {
-            background-color: #E8E8E8;
         }
 
         .resource-badge {
             display: inline-block;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             padding: 4px 10px;
             background-color: #F0F0F0;
             border-radius: 20px;
@@ -300,22 +327,78 @@
             margin-top: 8px;
         }
 
-        .delete-btn {
+        .action-buttons {
             position: absolute;
             top: 16px;
             right: 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
             background: none;
             border: none;
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 8px;
+            transition: all 0.2s;
             color: #ADB5BD;
-            transition: color 0.2s;
-            font-family: monospace;
-            padding: 4px 8px;
+        }
+
+        .icon-btn:hover {
+            background-color: #F0F0F0;
         }
 
         .delete-btn:hover {
             color: #E74C3C;
+        }
+
+        .edit-btn:hover {
+            color: #2C3E50;
+        }
+
+        /* Modo edición inline */
+        .edit-form {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #E8E8E8;
+        }
+
+        .edit-field {
+            margin-bottom: 12px;
+        }
+
+        .edit-field input, .edit-field textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #E2E6EA;
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+
+        .edit-file-row {
+            margin: 12px 0;
+        }
+
+        .save-edit-btn {
+            background-color: #27AE60;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-right: 8px;
+        }
+
+        .cancel-edit-btn {
+            background-color: #E0E0E0;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
         }
 
         .empty-state {
@@ -328,33 +411,35 @@
             border: 1px solid #EFEFEF;
         }
 
-        /* Animación suave */
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #FFFFFF;
+            padding: 10px 16px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #ADB5BD;
+            border-top: 1px solid #E8E8E8;
+            z-index: 99;
+        }
+
         @keyframes fadeSlide {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .resource-card {
-            animation: fadeSlide 0.25s ease-out;
+            animation: fadeSlide 0.2s ease-out;
         }
 
-        /* Responsive */
         @media (max-width: 550px) {
-            .subject-title {
-                font-size: 1.3rem;
-            }
-            .video-frame {
-                height: 180px;
-            }
-            .pdf-iframe {
-                height: 200px;
-            }
+            .subject-title { font-size: 1.3rem; }
+            .video-frame { height: 180px; }
+            .pdf-iframe { height: 200px; }
+            .resource-title { padding-right: 70px; }
         }
     </style>
 </head>
@@ -362,71 +447,49 @@
 
     <div class="app-header">
         <h1>EstudiApp</h1>
+        <div class="subtitle">Estudiá, no seas policía</div>
     </div>
 
     <div class="subjects-nav" id="subjectsNav"></div>
 
     <div class="main-container" id="mainContainer"></div>
 
+    <div class="footer">
+        ⚠️ Prohibido el uso de esta aplicación o este código para policías, servicios de inteligencia y para sus familiares directos.
+    </div>
+
     <script>
         // ======================= CONFIGURACIÓN =======================
-        // 10 materias base (los títulos se pueden editar)
         const DEFAULT_SUBJECTS = [
             "Matemáticas", "Lengua y Literatura", "Ciencias Naturales", "Historia",
             "Geografía", "Física", "Química", "Inglés", "Filosofía", "Arte"
         ];
 
-        // Estado global
-        let subjects = [...DEFAULT_SUBJECTS];      // lista de nombres de materias (editables)
-        let materials = {};                        // { "Matemáticas": [ ...recursos ] }
+        let subjects = [...DEFAULT_SUBJECTS];
+        let materials = {};
         let currentSubject = subjects[0];
+        let searchTerm = "";
+        let editingResourceId = null;
 
-        // ======================= PERSISTENCIA (localStorage) =======================
+        // ======================= PERSISTENCIA =======================
         function loadData() {
-            // Cargar materias personalizadas
             const savedSubjects = localStorage.getItem('EstudiApp_subjects');
             if (savedSubjects) {
-                try {
-                    subjects = JSON.parse(savedSubjects);
-                } catch(e) { subjects = [...DEFAULT_SUBJECTS]; }
-            } else {
-                subjects = [...DEFAULT_SUBJECTS];
-            }
+                try { subjects = JSON.parse(savedSubjects); } catch(e) { subjects = [...DEFAULT_SUBJECTS]; }
+            } else { subjects = [...DEFAULT_SUBJECTS]; }
 
-            // Cargar materiales
-            const savedMaterials = localStorage.getItem('EstudiApp_materials');
+            const savedMaterials = localStorage.getItem('EstudiApp_materials_v2');
             if (savedMaterials) {
-                try {
-                    materials = JSON.parse(savedMaterials);
-                } catch(e) { materials = {}; }
-            } else {
-                materials = {};
-            }
+                try { materials = JSON.parse(savedMaterials); } catch(e) { materials = {}; }
+            } else { materials = {}; }
 
-            // Asegurar que todas las materias existan en materials
-            subjects.forEach(sub => {
-                if (!materials[sub]) materials[sub] = [];
-            });
-
-            // Limpiar claves huérfanas (materias eliminadas)
-            Object.keys(materials).forEach(key => {
-                if (!subjects.includes(key)) {
-                    delete materials[key];
-                }
-            });
-        }
-
-        function saveSubjects() {
-            localStorage.setItem('EstudiApp_subjects', JSON.stringify(subjects));
-        }
-
-        function saveMaterials() {
-            localStorage.setItem('EstudiApp_materials', JSON.stringify(materials));
+            subjects.forEach(sub => { if (!materials[sub]) materials[sub] = []; });
+            Object.keys(materials).forEach(key => { if (!subjects.includes(key)) delete materials[key]; });
         }
 
         function saveAll() {
-            saveSubjects();
-            saveMaterials();
+            localStorage.setItem('EstudiApp_subjects', JSON.stringify(subjects));
+            localStorage.setItem('EstudiApp_materials_v2', JSON.stringify(materials));
         }
 
         // ======================= UTILIDADES =======================
@@ -440,17 +503,15 @@
             });
         }
 
-        // Convertir archivo a Base64
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = () => resolve(reader.result);
-                reader.onerror = (err) => reject(err);
+                reader.onerror = reject;
             });
         }
 
-        // Extraer ID de YouTube para embebido
         function getYouTubeId(url) {
             if (!url) return null;
             const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
@@ -458,18 +519,105 @@
             return match ? match[1] : null;
         }
 
-        // ======================= RENDERIZADO DE NAVEGACIÓN (10 materias) =======================
+        function getFileType(mimeType) {
+            if (mimeType.startsWith('image/')) return 'image';
+            if (mimeType.startsWith('video/')) return 'video';
+            if (mimeType === 'application/pdf') return 'pdf';
+            return 'other';
+        }
+
+        // ======================= CRUD =======================
+        async function addResource(resourceData) {
+            const { title, videoLink, docLink, localFile } = resourceData;
+            if (!title) { alert("Escribe un título"); return false; }
+            
+            const newResource = {
+                id: Date.now() + Math.random(),
+                title: title,
+                video: videoLink || null,
+                pdfUrl: docLink || null,
+                fileData: null,
+                fileType: null,
+                fileName: null
+            };
+
+            if (localFile) {
+                const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/quicktime', 'video/webm'];
+                if (!allowedTypes.includes(localFile.type)) {
+                    alert("Formato no soportado. Permitidos: PDF, imágenes (jpg, png, gif, webp) y videos (mp4, mov, webm)");
+                    return false;
+                }
+                if (localFile.size > 30 * 1024 * 1024) {
+                    if (!confirm("El archivo es grande (>30MB). Puede afectar el rendimiento. ¿Continuar?")) return false;
+                }
+                try {
+                    newResource.fileData = await fileToBase64(localFile);
+                    newResource.fileType = getFileType(localFile.type);
+                    newResource.fileName = localFile.name;
+                } catch(err) {
+                    alert("Error al leer el archivo");
+                    return false;
+                }
+            }
+
+            if (!materials[currentSubject]) materials[currentSubject] = [];
+            materials[currentSubject].push(newResource);
+            saveAll();
+            return true;
+        }
+
+        async function updateResource(resourceId, updatedData) {
+            const resources = materials[currentSubject];
+            const index = resources.findIndex(r => r.id === resourceId);
+            if (index === -1) return false;
+
+            const oldResource = resources[index];
+            const updated = { ...oldResource, ...updatedData };
+            
+            if (updatedData.newFile) {
+                const file = updatedData.newFile;
+                const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/quicktime', 'video/webm'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert("Formato no soportado para el nuevo archivo");
+                    return false;
+                }
+                try {
+                    updated.fileData = await fileToBase64(file);
+                    updated.fileType = getFileType(file.type);
+                    updated.fileName = file.name;
+                } catch(err) {
+                    alert("Error al leer el nuevo archivo");
+                    return false;
+                }
+            }
+            
+            materials[currentSubject][index] = updated;
+            saveAll();
+            return true;
+        }
+
+        function deleteResource(resourceId) {
+            if (!confirm("¿Eliminar este recurso permanentemente?")) return;
+            if (materials[currentSubject]) {
+                materials[currentSubject] = materials[currentSubject].filter(r => r.id !== resourceId);
+                saveAll();
+                if (editingResourceId === resourceId) editingResourceId = null;
+                renderMainContent();
+            }
+        }
+
+        // ======================= RENDER =======================
         function renderNavigation() {
             const nav = document.getElementById('subjectsNav');
             nav.innerHTML = '';
-            
             subjects.forEach(subject => {
                 const btn = document.createElement('button');
                 btn.className = `nav-btn ${subject === currentSubject ? 'active' : ''}`;
                 btn.textContent = subject;
-                btn.title = subject;
                 btn.onclick = () => {
                     currentSubject = subject;
+                    searchTerm = "";
+                    editingResourceId = null;
                     renderNavigation();
                     renderMainContent();
                 };
@@ -477,30 +625,19 @@
             });
         }
 
-        // ======================= EDITAR TÍTULO DE MATERIA =======================
         function editSubjectTitle() {
             const newTitle = prompt("Editar nombre de la materia:", currentSubject);
             if (!newTitle || newTitle.trim() === "") return;
             const trimmed = newTitle.trim();
             if (trimmed === currentSubject) return;
-            
-            // Verificar que no exista ya otra materia con ese nombre
-            if (subjects.includes(trimmed)) {
-                alert("Ya existe una materia con ese nombre. Elige otro.");
-                return;
-            }
+            if (subjects.includes(trimmed)) { alert("Ya existe esa materia"); return; }
             
             const oldName = currentSubject;
             const index = subjects.indexOf(oldName);
             if (index !== -1) {
                 subjects[index] = trimmed;
-                // Migrar los materiales al nuevo nombre
-                if (materials[oldName]) {
-                    materials[trimmed] = materials[oldName];
-                    delete materials[oldName];
-                } else {
-                    materials[trimmed] = [];
-                }
+                if (materials[oldName]) { materials[trimmed] = materials[oldName]; delete materials[oldName]; }
+                else { materials[trimmed] = []; }
                 currentSubject = trimmed;
                 saveAll();
                 renderNavigation();
@@ -508,252 +645,211 @@
             }
         }
 
-        // ======================= AGREGAR RECURSO =======================
-        async function addResource(formData) {
-            const { title, videoLink, docLink, localFile } = formData;
-            
-            if (!title) {
-                alert("Por favor, escribe un título para el recurso.");
-                return false;
+        function renderResourcePreview(resource) {
+            if (resource.video && resource.video.trim()) {
+                const videoId = getYouTubeId(resource.video);
+                if (videoId) {
+                    return `<div class="resource-preview"><iframe class="video-frame" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
+                } else {
+                    return `<div class="resource-preview" style="flex-direction:column; padding:16px;"><a href="${escapeHtml(resource.video)}" target="_blank" class="external-link">🔗 Abrir video externo</a></div>`;
+                }
             }
-            
-            if (!videoLink && !docLink && !localFile) {
-                alert("Debes agregar al menos un enlace de video, un enlace de documento o subir un archivo PDF.");
-                return false;
+            else if (resource.fileData) {
+                if (resource.fileType === 'image') {
+                    return `<div class="resource-preview"><img src="${resource.fileData}" class="media-img" alt="imagen"></div>`;
+                } else if (resource.fileType === 'video') {
+                    return `<div class="resource-preview"><video controls class="media-video-local" src="${resource.fileData}"></video></div>`;
+                } else if (resource.fileType === 'pdf') {
+                    return `<div class="resource-preview"><iframe class="pdf-iframe" src="${resource.fileData}#toolbar=0" title="PDF"></iframe></div>`;
+                }
             }
+            else if (resource.pdfUrl && resource.pdfUrl.trim()) {
+                return `<div class="resource-preview" style="padding:16px;"><a href="${escapeHtml(resource.pdfUrl)}" target="_blank" class="external-link">📑 Abrir documento externo</a></div>`;
+            }
+            return `<div class="resource-preview" style="padding:24px; color:#ADB5BD;">📄 Sin vista previa</div>`;
+        }
+
+        function getResourceBadge(resource) {
+            if (resource.video) return "🎥 Video (enlace)";
+            if (resource.fileData) {
+                if (resource.fileType === 'image') return `🖼️ Imagen • ${resource.fileName || 'archivo'}`;
+                if (resource.fileType === 'video') return `🎬 Video local • ${resource.fileName || 'video'}`;
+                if (resource.fileType === 'pdf') return `📄 PDF local • ${resource.fileName || 'documento'}`;
+            }
+            if (resource.pdfUrl) return "🔗 Enlace web";
+            return "📌 Recurso";
+        }
+
+        function renderEditMode(resource, cardElement) {
+            const editDiv = document.createElement('div');
+            editDiv.className = 'edit-form';
+            editDiv.innerHTML = `
+                <div class="edit-field">
+                    <label style="font-size:0.7rem; color:#8E9AAB;">Título</label>
+                    <input type="text" id="editTitle" value="${escapeHtml(resource.title)}">
+                </div>
+                <div class="edit-field">
+                    <label style="font-size:0.7rem; color:#8E9AAB;">Enlace de video (YouTube)</label>
+                    <input type="text" id="editVideo" value="${escapeHtml(resource.video || '')}" placeholder="https://...">
+                </div>
+                <div class="edit-field">
+                    <label style="font-size:0.7rem; color:#8E9AAB;">Enlace de documento</label>
+                    <input type="text" id="editDocLink" value="${escapeHtml(resource.pdfUrl || '')}" placeholder="https://...">
+                </div>
+                <div class="edit-file-row">
+                    <div class="file-wrapper" style="margin-bottom:8px;">
+                        <button class="file-btn" id="editFileTrigger">📂 Reemplazar archivo (imagen/video/pdf)</button>
+                        <input type="file" id="editFileInput" class="file-input-hidden" accept="image/*,video/*,application/pdf">
+                    </div>
+                    <div id="editFileName" class="file-name">${resource.fileName ? `Archivo actual: ${resource.fileName}` : 'Sin archivo local'}</div>
+                </div>
+                <div style="margin-top:12px;">
+                    <button class="save-edit-btn" id="saveEditBtn">💾 Guardar cambios</button>
+                    <button class="cancel-edit-btn" id="cancelEditBtn">Cancelar</button>
+                </div>
+            `;
+            cardElement.appendChild(editDiv);
+
+            const fileInputEdit = editDiv.querySelector('#editFileInput');
+            const fileTriggerEdit = editDiv.querySelector('#editFileTrigger');
+            const fileNameSpan = editDiv.querySelector('#editFileName');
             
-            const newResource = {
-                id: Date.now() + Math.random(),
-                title: title,
-                video: videoLink || null,
-                pdfUrl: docLink || null,
-                pdfBase64: null
+            let newFileSelected = null;
+            fileInputEdit.addEventListener('change', () => {
+                if (fileInputEdit.files.length > 0) {
+                    newFileSelected = fileInputEdit.files[0];
+                    fileNameSpan.textContent = `Nuevo archivo: ${newFileSelected.name}`;
+                    fileTriggerEdit.textContent = '✅ Archivo seleccionado';
+                }
+            });
+
+            editDiv.querySelector('#saveEditBtn').onclick = async () => {
+                const newTitle = editDiv.querySelector('#editTitle').value.trim();
+                const newVideo = editDiv.querySelector('#editVideo').value.trim();
+                const newDocLink = editDiv.querySelector('#editDocLink').value.trim();
+                if (!newTitle) { alert("El título no puede estar vacío"); return; }
+                
+                const updateData = { title: newTitle, video: newVideo || null, pdfUrl: newDocLink || null };
+                if (newFileSelected) updateData.newFile = newFileSelected;
+                
+                const success = await updateResource(resource.id, updateData);
+                if (success) {
+                    editingResourceId = null;
+                    renderMainContent();
+                }
             };
             
-            // Procesar archivo local si existe
-            if (localFile) {
-                if (localFile.type !== 'application/pdf') {
-                    alert("Solo se permiten archivos PDF.");
-                    return false;
-                }
-                if (localFile.size > 20 * 1024 * 1024) {
-                    if (!confirm("El archivo es grande (más de 20MB). Puede afectar el rendimiento. ¿Deseas continuar?")) {
-                        return false;
-                    }
-                }
-                try {
-                    newResource.pdfBase64 = await fileToBase64(localFile);
-                    newResource.fileName = localFile.name;
-                } catch (err) {
-                    alert("Error al leer el archivo. Intenta con otro.");
-                    return false;
-                }
-            }
-            
-            // Guardar en la materia actual
-            if (!materials[currentSubject]) materials[currentSubject] = [];
-            materials[currentSubject].push(newResource);
-            saveAll();
-            return true;
-        }
-
-        // ======================= ELIMINAR RECURSO =======================
-        function deleteResource(resourceId) {
-            if (!confirm("¿Eliminar este recurso permanentemente?")) return;
-            if (materials[currentSubject]) {
-                materials[currentSubject] = materials[currentSubject].filter(r => r.id !== resourceId);
-                saveAll();
+            editDiv.querySelector('#cancelEditBtn').onclick = () => {
+                editingResourceId = null;
                 renderMainContent();
-            }
+            };
         }
 
-        // ======================= RENDERIZAR CONTENIDO PRINCIPAL =======================
         function renderMainContent() {
             const container = document.getElementById('mainContainer');
             container.innerHTML = '';
             
-            // ----- Encabezado de materia con botón editar -----
+            // Header materia
             const headerDiv = document.createElement('div');
             headerDiv.className = 'subject-header';
-            headerDiv.innerHTML = `
-                <span class="subject-title">${escapeHtml(currentSubject)}</span>
-                <button class="edit-title-btn" id="editSubjectBtn">✏️ Editar título</button>
-            `;
+            headerDiv.innerHTML = `<span class="subject-title">${escapeHtml(currentSubject)}</span><button class="edit-title-btn" id="editSubjectBtn">✏️ Editar título</button>`;
             container.appendChild(headerDiv);
             
-            // ----- Formulario para agregar recursos -----
+            // Barra de búsqueda
+            const searchDiv = document.createElement('div');
+            searchDiv.className = 'search-bar';
+            searchDiv.innerHTML = `<input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar por título..." value="${escapeHtml(searchTerm)}">`;
+            container.appendChild(searchDiv);
+            
+            // Formulario agregar
             const addCard = document.createElement('div');
             addCard.className = 'add-card';
             addCard.innerHTML = `
-                <div class="form-group">
-                    <label class="form-label">TÍTULO DEL RECURSO</label>
-                    <input type="text" id="resTitle" class="form-input" placeholder="Ej: Apuntes de clase, Video explicativo..." autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">ENLACE DE VIDEO (YouTube, Vimeo, etc)</label>
-                    <input type="text" id="videoUrl" class="form-input" placeholder="https://youtube.com/watch?v=...">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">ENLACE DE DOCUMENTO (PDF, Drive, web)</label>
-                    <input type="text" id="docUrl" class="form-input" placeholder="https://ejemplo.com/documento.pdf">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">SUBIR DOCUMENTO DESDE DISPOSITIVO (PDF)</label>
-                    <div class="file-wrapper">
-                        <button class="file-btn" id="fileTriggerBtn">📂 Seleccionar archivo PDF</button>
-                        <input type="file" id="localPdfFile" class="file-input-hidden" accept="application/pdf">
-                    </div>
+                <div class="form-group"><label class="form-label">TÍTULO DEL RECURSO *</label><input type="text" id="resTitle" class="form-input" placeholder="Ej: Apunte, video clase..."></div>
+                <div class="form-group"><label class="form-label">ENLACE DE VIDEO (YouTube)</label><input type="text" id="videoUrl" class="form-input" placeholder="https://youtube.com/watch?v=..."></div>
+                <div class="form-group"><label class="form-label">ENLACE DE DOCUMENTO</label><input type="text" id="docUrl" class="form-input" placeholder="https://ejemplo.com/documento.pdf"></div>
+                <div class="form-group"><label class="form-label">SUBIR ARCHIVO (Imagen / Video / PDF)</label>
+                    <div class="file-wrapper"><button class="file-btn" id="fileTriggerBtn">📂 Seleccionar archivo</button><input type="file" id="localFileInput" class="file-input-hidden" accept="image/*,video/*,application/pdf"></div>
                     <div id="selectedFileName" class="file-name"></div>
                 </div>
                 <button class="btn-add" id="submitResourceBtn">+ Agregar a ${escapeHtml(currentSubject)}</button>
             `;
             container.appendChild(addCard);
             
-            // Lógica de archivo: mostrar nombre seleccionado
-            const fileInput = addCard.querySelector('#localPdfFile');
+            // Lógica archivo
+            const fileInput = addCard.querySelector('#localFileInput');
             const fileTrigger = addCard.querySelector('#fileTriggerBtn');
             const fileNameSpan = addCard.querySelector('#selectedFileName');
-            
             fileInput.addEventListener('change', () => {
-                if (fileInput.files.length > 0) {
-                    const f = fileInput.files[0];
-                    fileNameSpan.textContent = `📄 ${f.name} (${(f.size / 1024).toFixed(1)} KB)`;
+                if (fileInput.files.length) {
+                    fileNameSpan.textContent = `📎 ${fileInput.files[0].name}`;
                     fileTrigger.textContent = '✅ Archivo listo';
-                } else {
-                    fileNameSpan.textContent = '';
-                    fileTrigger.textContent = '📂 Seleccionar archivo PDF';
-                }
+                } else { fileNameSpan.textContent = ''; fileTrigger.textContent = '📂 Seleccionar archivo'; }
             });
             
-            // Botón agregar recurso
-            const addBtn = addCard.querySelector('#submitResourceBtn');
-            addBtn.onclick = async () => {
-                const titleInput = addCard.querySelector('#resTitle');
-                const videoInput = addCard.querySelector('#videoUrl');
-                const docInput = addCard.querySelector('#docUrl');
+            addCard.querySelector('#submitResourceBtn').onclick = async () => {
+                const title = addCard.querySelector('#resTitle').value.trim();
+                const videoLink = addCard.querySelector('#videoUrl').value.trim();
+                const docLink = addCard.querySelector('#docUrl').value.trim();
                 const localFile = fileInput.files[0];
-                
-                const resourceData = {
-                    title: titleInput.value.trim(),
-                    videoLink: videoInput.value.trim(),
-                    docLink: docInput.value.trim(),
-                    localFile: localFile || null
-                };
-                
-                const success = await addResource(resourceData);
+                const success = await addResource({ title, videoLink, docLink, localFile });
                 if (success) {
-                    // Limpiar formulario
-                    titleInput.value = '';
-                    videoInput.value = '';
-                    docInput.value = '';
+                    addCard.querySelector('#resTitle').value = '';
+                    addCard.querySelector('#videoUrl').value = '';
+                    addCard.querySelector('#docUrl').value = '';
                     fileInput.value = '';
                     fileNameSpan.textContent = '';
-                    fileTrigger.textContent = '📂 Seleccionar archivo PDF';
-                    // Recargar vista para mostrar el nuevo recurso
+                    fileTrigger.textContent = '📂 Seleccionar archivo';
                     renderMainContent();
                 }
             };
             
-            // ----- Lista de recursos guardados (infinitos, ordenados del más nuevo al más viejo) -----
-            const resourcesList = materials[currentSubject] || [];
+            // Filtrar por búsqueda
+            let resources = materials[currentSubject] || [];
+            if (searchTerm.trim()) {
+                const term = searchTerm.trim().toLowerCase();
+                resources = resources.filter(r => r.title.toLowerCase().includes(term) || r.title.toLowerCase().startsWith(term));
+            }
             
-            if (resourcesList.length === 0) {
+            if (resources.length === 0) {
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'empty-state';
-                emptyDiv.innerHTML = '📚 No hay recursos aún.<br>Agrega documentos, videos o archivos usando el formulario de arriba.';
+                emptyDiv.innerHTML = searchTerm ? `🔍 No se encontraron recursos con "${escapeHtml(searchTerm)}"` : "📚 No hay recursos aún. Agregá usando el formulario.";
                 container.appendChild(emptyDiv);
             } else {
-                // Mostrar en orden descendente (primero los más nuevos)
-                const sortedResources = [...resourcesList].reverse();
-                
-                sortedResources.forEach(resource => {
+                const sorted = [...resources].reverse();
+                sorted.forEach(resource => {
                     const card = document.createElement('div');
-                    card.className = 'resource-card';
+                    card.className = `resource-card ${editingResourceId === resource.id ? 'editing' : ''}`;
                     
-                    // Determinar qué mostrar (prioridad: video > archivo local > enlace PDF)
-                    let previewContent = '';
-                    let badgeText = '';
+                    const actionsHtml = `<div class="action-buttons"><button class="icon-btn edit-btn" data-id="${resource.id}">✏️</button><button class="icon-btn delete-btn" data-id="${resource.id}">🗑️</button></div>`;
+                    const previewHtml = renderResourcePreview(resource);
+                    const badgeHtml = `<div class="resource-badge">${getResourceBadge(resource)}</div>`;
                     
-                    // Caso 1: Hay video
-                    if (resource.video && resource.video.trim() !== '') {
-                        const videoId = getYouTubeId(resource.video);
-                        if (videoId) {
-                            previewContent = `
-                                <div class="resource-preview">
-                                    <iframe class="video-frame" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            `;
-                        } else {
-                            previewContent = `
-                                <div class="resource-preview" style="flex-direction:column; gap:12px; padding:16px;">
-                                    <a href="${escapeHtml(resource.video)}" target="_blank" rel="noopener" class="external-link">🔗 Abrir video externo</a>
-                                    <span style="font-size:0.7rem; color:#8E9AAB;">Enlace no embebible automáticamente</span>
-                                </div>
-                            `;
-                        }
-                        badgeText = '🎥 Video';
-                    }
-                    // Caso 2: Archivo local PDF (Base64)
-                    else if (resource.pdfBase64) {
-                        previewContent = `
-                            <div class="resource-preview">
-                                <iframe class="pdf-iframe" src="${resource.pdfBase64}#toolbar=0" title="PDF local"></iframe>
-                            </div>
-                        `;
-                        badgeText = `📄 Documento local • ${resource.fileName || 'PDF'}`;
-                    }
-                    // Caso 3: Enlace de documento externo
-                    else if (resource.pdfUrl && resource.pdfUrl.trim() !== '') {
-                        previewContent = `
-                            <div class="resource-preview" style="flex-direction:column; gap:12px; padding:20px;">
-                                <a href="${escapeHtml(resource.pdfUrl)}" target="_blank" rel="noopener" class="external-link">📑 Abrir documento externo</a>
-                                <span style="font-size:0.7rem; color:#8E9AAB;">${escapeHtml(resource.pdfUrl.substring(0, 60))}${resource.pdfUrl.length > 60 ? '…' : ''}</span>
-                            </div>
-                        `;
-                        badgeText = '🔗 Enlace web';
-                    } else {
-                        previewContent = `
-                            <div class="resource-preview" style="padding:24px; color:#ADB5BD;">
-                                ⚠️ Sin contenido multimedia visible
-                            </div>
-                        `;
-                        badgeText = '📄 Recurso';
-                    }
-                    
-                    card.innerHTML = `
-                        <button class="delete-btn" data-id="${resource.id}">✕</button>
-                        <div class="resource-title">${escapeHtml(resource.title)}</div>
-                        ${previewContent}
-                        <div class="resource-badge">${badgeText}</div>
-                    `;
+                    card.innerHTML = `<div class="resource-title">${escapeHtml(resource.title)}</div>${actionsHtml}${previewHtml}${badgeHtml}`;
                     container.appendChild(card);
-                });
-                
-                // Asignar eventos de eliminación
-                document.querySelectorAll('.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const id = parseFloat(btn.getAttribute('data-id'));
-                        deleteResource(id);
-                    });
+                    
+                    if (editingResourceId === resource.id) {
+                        renderEditMode(resource, card);
+                    } else {
+                        const editBtn = card.querySelector('.edit-btn');
+                        const deleteBtn = card.querySelector('.delete-btn');
+                        if (editBtn) editBtn.onclick = () => { editingResourceId = resource.id; renderMainContent(); };
+                        if (deleteBtn) deleteBtn.onclick = () => deleteResource(resource.id);
+                    }
                 });
             }
             
-            // Evento para editar título de materia
-            const editBtn = document.getElementById('editSubjectBtn');
-            if (editBtn) {
-                editBtn.onclick = editSubjectTitle;
-            }
+            // Eventos
+            document.getElementById('editSubjectBtn').onclick = editSubjectTitle;
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => { searchTerm = e.target.value; renderMainContent(); });
         }
         
-        // ======================= INICIALIZACIÓN =======================
         function init() {
             loadData();
-            // Asegurar consistencia: si faltan materias en materials se crean
-            subjects.forEach(sub => {
-                if (!materials[sub]) materials[sub] = [];
-            });
-            saveAll(); // por si acaso
+            subjects.forEach(sub => { if (!materials[sub]) materials[sub] = []; });
+            saveAll();
             currentSubject = subjects[0];
             renderNavigation();
             renderMainContent();
